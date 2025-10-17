@@ -31,7 +31,6 @@ export const getQuizById = async (req, res) => {
     try{
         const {id} = req.params;
         const quiz = await Quiz.findByPk(id);
-        console.log("quiz: ", quiz);
 
         if(!quiz) {
             return res.status(404).json({ message: 'Quiz not found' });
