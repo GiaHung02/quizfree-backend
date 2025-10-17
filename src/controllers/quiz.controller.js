@@ -26,3 +26,41 @@ export const createQuiz = async (req, res) => {
         console.error('Error creating quiz:', error);
     }
 }
+
+export const getQuizById = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const quiz = await Quiz.findByPk(id);
+        console.log("quiz: ", quiz);
+
+        if(!quiz) {
+            return res.status(404).json({ message: 'Quiz not found' });
+        }
+        res.status(200).json({ status: 200, success: true, message: "Quiz fetched successfully", data: quiz });
+    }catch(error) {
+        res.status(500).json({ message: 'Internal server error' });
+        console.error('Error fetching quiz:', error);
+    }
+}
+
+export const updateQuiz = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {title, description} = req.body;
+
+        if(!title || !description) {
+            res.status(400).json({message: "title or description is empty"});
+        }
+
+        const existingQuiz = await Quiz.findByPk(id);
+        if(!existingQuiz) {
+            return res.status(404).json({ message: 'Quiz not found' });
+        }
+        const updatedQuiz = await existingQuiz.update({title, description});
+        res.status(200).json({ status: 200, success: true, message: "Quiz updated successfully", data: updatedQuiz });
+
+    } catch(error) {
+        res.status(500).json({ message: 'Internal server error' });
+        console.error('Error updating quiz:', error);
+    }
+}
