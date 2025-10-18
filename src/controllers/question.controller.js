@@ -4,7 +4,7 @@ import Quiz from "../models/quizzes.model.js"
 export const getAllQuestions = async (req, res) => {
 
     try{
-        const questions = await Questions.findAll() ;
+        const questions = await Questions.findAll({include: [{model: Quiz, attributes: ['id', 'title', 'description']}]}) ;
         console.log("question: ", questions);
         res.status(200).json({ status: 200, success: true, message: "Questions fetched successfully", data: questions });
     }catch(error){
@@ -75,4 +75,3 @@ export const updateQuestion = async (req, res) => {
         console.error('Error deleting question:', error);
     }
 }
-    

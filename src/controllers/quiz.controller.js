@@ -1,3 +1,4 @@
+import Question from "../models/questions.model.js";
 import Quiz from "../models/quizzes.model.js";
 
 export const getAllQuizzes = async (req, res) => {
@@ -30,7 +31,7 @@ export const createQuiz = async (req, res) => {
 export const getQuizById = async (req, res) => {
     try{
         const {id} = req.params;
-        const quiz = await Quiz.findByPk(id);
+        const quiz = await Quiz.findByPk(id, {include: [{model: Question}]});
 
         if(!quiz) {
             return res.status(404).json({ message: 'Quiz not found' });
