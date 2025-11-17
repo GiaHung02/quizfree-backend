@@ -1,10 +1,10 @@
 import express from 'express';
-import { getAllQuizzes, createQuiz, getQuizById, updateQuiz } from '../controllers/quiz.controller.js';
+import { getAllQuizzes, createQuiz, getQuizBySlug, updateQuiz } from '../controllers/quiz.controller.js';
 const router = express.Router();
 
 router.get('/', getAllQuizzes);
 router.post('/', createQuiz);
-router.get('/:id', getQuizById);
+router.get('/:slug', getQuizBySlug);
 router.put('/:id', updateQuiz);
 
 

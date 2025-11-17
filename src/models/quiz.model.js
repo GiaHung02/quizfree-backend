@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../configs/sequelize.config.js';
 
-const Quiz = sequelize.define('Quizzes', {
+const quiz = sequelize.define('quizzes', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -15,6 +15,11 @@ const Quiz = sequelize.define('Quizzes', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
     createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -27,9 +32,9 @@ const Quiz = sequelize.define('Quizzes', {
 
 
 
-(async () => {
-    await Quiz.sync();
-    console.log("✅ Quizzes table synced");
-})();
+// (async () => {
+//     await quiz.sync({alter: true});
+//     console.log("✅ Quizzes table synced");
+// })();
 
-export default Quiz;
+export default quiz;

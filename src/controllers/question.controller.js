@@ -1,12 +1,12 @@
-import Questions from '../models/questions.model.js';
-import Quiz from "../models/quizzes.model.js"
+import questions from '../models/question.model.js';
+import quiz from "../models/quiz.model.js"
 
 export const getAllQuestions = async (req, res) => {
 
     try{
-        const questions = await Questions.findAll({include: [{model: Quiz, attributes: ['id', 'title', 'description']}]}) ;
-        console.log("question: ", questions);
-        res.status(200).json({ status: 200, success: true, message: "Questions fetched successfully", data: questions });
+        const existedQuestions = await questions.findAll({include: [{model: Quiz, attributes: ['id', 'title', 'description']}]}) ;
+        console.log("question: ", existedQuestions);
+        res.status(200).json({ status: 200, success: true, message: "Questions fetched successfully", data: existedQuestions });
     }catch(error){
         res.status(500).json({ message: 'Internal server error' });
         console.error('Error fetching questions:', error);
@@ -19,14 +19,14 @@ export const createQuestion = async (req, res) => {
         if(!quiz_id || !type || !content || !order) {
             res.status(400).json({ message: "Something is missing, please check again!!!" });
         }
-        const existingQuizId = await Quiz.findByPk(quiz_id);
+        const existingQuizId = await quiz.findByPk(quiz_id);
 
         // check if quiz is existing or not
         if (!existingQuizId) {
             return res.status(404).json({ message: 'Quiz not found' });
         }
 
-        const question = await Questions.create({ quiz_id, type, content, order });
+        const question = await questions.create({ quiz_id, type, content, order });
 
         res.status(201).json({ message: " Question created successfully", data: question });
     }catch(error){
@@ -38,7 +38,7 @@ export const createQuestion = async (req, res) => {
 export const getQuestionById = async (req, res) => {
     try{
         const {id} = req.params;
-        const question = await Questions.findByPk(id);
+        const question = await questions.findByPk(id);
         if(!question) {
             return res.status(404).json({ message: 'Question not found' });
         }
@@ -62,7 +62,7 @@ export const updateQuestion = async (req, res) => {
         }
 
         if(quiz_id) {
-            const existingQuiz = await Quiz.findByPk(quiz_id);
+            const existingQuiz = await quiz.findByPk(quiz_id);
             if(!existingQuiz) {
                 return res.status(404).json({ message: "Quiz not found!!!" });
             }

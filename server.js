@@ -3,16 +3,26 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import questionRoutes from './src/routes/question.route.js';
 import quizRoutes from './src/routes/quiz.route.js';
+
+import sequelize from './src/configs/sequelize.config.js';
+// Import tất cả models (KHÔNG sync trong model)
+import './src/models/quiz.model.js';
+import './src/models/question.model.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/questions', questionRoutes);
-app.use('/api/quizzes', quizRoutes);
+app.use('/api/question', questionRoutes);
+app.use('/api/quiz', quizRoutes);
+
+// 🔥 Sync database 1 lần duy nhất tại đây
+sequelize.sync({ alter: true })
+    .then(() => console.log("✅ Database synced"))
+    .catch(err => console.error(err));
 
 
 app.listen(PORT, () => {

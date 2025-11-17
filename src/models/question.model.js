@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../configs/sequelize.config.js';
-import Quiz from './quizzes.model.js';
+import quiz from './quiz.model.js';
 
-const Question = sequelize.define('Questions', {
+const question = sequelize.define('questions', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +12,7 @@ const Question = sequelize.define('Questions', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: "Quizzes",
+            model: "quizzes",
             key: "id"
         }
     },
@@ -39,13 +39,13 @@ const Question = sequelize.define('Questions', {
 });
 
 
-Question.belongsTo(Quiz, {foreignKey: "quiz_id"});
-Quiz.hasMany(Question, { foreignKey: 'quiz_id' });
+question.belongsTo(quiz, {foreignKey: "quiz_id"});
+quiz.hasMany(question, { foreignKey: 'quiz_id' });
 
 
-(async () => {
-    await Question.sync();
-    console.log("✅ Questions table synced");
-})();
+// (async () => {
+//     await question.sync({alter: true});
+//     console.log("✅ Questions table synced");
+// })();
 
-export default Question;
+export default question;
