@@ -17,7 +17,7 @@ const quiz = sequelize.define('quizzes', {
     },
     slug: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     createdAt: {
