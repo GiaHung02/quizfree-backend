@@ -56,7 +56,7 @@ export const updateQuestion = async (req, res) => {
         
         console.log("id: ", id);
 
-        const existingQuestion = await Questions.findByPk(id);
+        const existingQuestion = await questions.findByPk(id);
         if(!existingQuestion) {
             return res.status(404).json({ message: "Question not found!!!" });
         }

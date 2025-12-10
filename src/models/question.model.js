@@ -22,11 +22,11 @@ const question = sequelize.define('questions', {
     },
     content: {
         type: DataTypes.JSON,
-        allowNull: false
+        allowNull: true
     },
     order: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     createdAt: {
         type: DataTypes.DATE,
