@@ -75,3 +75,18 @@ export const updateQuestion = async (req, res) => {
         console.error('Error deleting question:', error);
     }
 }
+
+export const deleteQuestion = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const existingQuestion = await questions.findByPk(id);
+        if(!existingQuestion) {
+            return res.status(404).json({ message: "Question not found!!!" });
+        }
+        await existingQuestion.destroy();
+        res.status(200).json({ message: "Question deleted successfully" });
+    }catch(error) {
+        res.status(500).json({ message: 'Internal server error' });
+        console.error('Error deleting question:', error);
+    }
+}
