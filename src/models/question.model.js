@@ -35,11 +35,19 @@ const question = sequelize.define('questions', {
     },
     updatedAt: {
         type: DataTypes.DATE,
+    },
+    deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
+
+}, {
+    paranoid: true,
+    timestamps: true,
 });
 
 
-question.belongsTo(quiz, {foreignKey: "quiz_id"});
+question.belongsTo(quiz, { foreignKey: "quiz_id" });
 quiz.hasMany(question, { foreignKey: 'quiz_id' });
 
 

@@ -4,7 +4,7 @@ import quiz from "../models/quiz.model.js"
 export const getAllQuestions = async (req, res) => {
 
     try{
-        const existedQuestions = await questions.findAll({include: [{model: Quiz, attributes: ['id', 'title', 'description']}]}) ;
+        const existedQuestions = await questions.findAll({include: [{model: quiz, attributes: ['id', 'title', 'description']}]}) ;
         console.log("question: ", existedQuestions);
         res.status(200).json({ status: 200, success: true, message: "Questions fetched successfully", data: existedQuestions });
     }catch(error){
