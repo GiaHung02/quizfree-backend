@@ -43,12 +43,12 @@ export const createQuiz = async (req, res) => {
         }
 
         // Tạo quiz
-        const quiz = await quiz.create({ title, description, slug });
+        const createdQuiz = await quiz.create({ title, description, slug });
 
         return res.status(201).json({
             success: true,
             message: "Quiz created successfully",
-            data: quiz
+            data: createdQuiz
         });
 
     } catch (error) {
@@ -60,11 +60,30 @@ export const createQuiz = async (req, res) => {
     }
 };
 
+export const getQuizById = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const existedQuiz = await quiz.findByPk(id, {include: [{model: question}]});
+
+        if(!existedQuiz) {
+            return res.status(404).json({ message: 'Quiz not found' });
+        }
+        res.status(200).json({ status: 200, success: true, message: "Quiz fetched successfully", data: existedQuiz });
+    } catch(error) {
+        res.status(500).json({ message: 'Internal server error' });
+        console.error('Error fetching quiz:', error);
+    }
+}
+
 
 export const getQuizBySlug = async (req, res) => {
     try{
         const {slug} = req.params;
+        console.log("slug: ", slug);
+        
         const existedQuiz = await quiz.findOne({where: { slug }, include: [{model: question}]});
+        
+        console.log("existedQuiz: ", existedQuiz);
 
         if(!existedQuiz) {
             return res.status(404).json({ message: 'Quiz not found' });
@@ -80,9 +99,9 @@ export const getQuizBySlug = async (req, res) => {
 export const updateQuiz = async (req, res) => {
     try {
         const {id} = req.params;
-        const {title, description} = req.body;
+        const {title, description, slug} = req.body;
 
-        if(!title || !description) {
+        if(!title || !description || !slug) {
             res.status(400).json({message: "title or description is empty"});
         }
 
